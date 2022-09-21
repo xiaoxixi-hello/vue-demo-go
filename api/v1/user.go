@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/ylinyang/vue-demo-go/model"
 	"github.com/ylinyang/vue-demo-go/utils"
@@ -30,12 +31,12 @@ func AddUser(c *gin.Context) {
 func GetUsers(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	pageNum, _ := strconv.Atoi(c.Query("pageNum"))
-
+	fmt.Println(pageSize, pageNum)
 	if pageSize == 0 {
 		pageSize = -1
 	}
 	if pageNum == 0 {
-		pageNum = -1
+		pageNum = 1
 	}
 	users := model.GetUsers(pageSize, pageNum)
 	c.JSON(http.StatusOK, gin.H{

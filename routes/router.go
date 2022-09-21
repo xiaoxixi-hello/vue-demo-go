@@ -20,7 +20,8 @@ func InitRouter() {
 	auth.Use(middleware.JwtToken())
 	auth.GET("test", model.Test)
 
-	s.Group("/api/v1")
+	//s.Group("/api/v1")
+	auth.GET("/users", v1.GetUsers)
 	if err := s.Run(utils.HttpPort); err != nil {
 		log.Panicln(err)
 	}

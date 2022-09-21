@@ -6,7 +6,6 @@ import (
 	"github.com/ylinyang/vue-demo-go/utils"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 )
 
@@ -64,17 +63,9 @@ func JwtToken() gin.HandlerFunc {
 			context.Abort()
 			return
 		}
-		n := strings.SplitN(tokenHeader, " ", 2)
-		// [Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QxIiwiZXhwIjoxNjYzNTQ3MTMzLCJpc3MiOiJkZW1vIn0.XwpQ5yXR9cVRmNCr6BPET8zopg89bt4J_kiR15UyOvI]
-		if len(n) != 2 && n[0] != "Bearer" {
-			context.JSON(http.StatusOK, gin.H{
-				"code":    utils.ErrorToken,
-				"message": "token格式异常",
-			})
-			context.Abort()
-			return
-		}
-		token, i := checkToken(n[1])
+		// 前端添加 Authorization 直接返token无需切割校验
+		//n := strings.SplitN(tokenHeader, " ", 2)
+		token, i := checkToken(tokenHeader)
 		if i == utils.ErrorToken {
 			context.JSON(http.StatusOK, gin.H{
 				"code":    utils.ErrorToken,
